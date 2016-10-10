@@ -1,0 +1,65 @@
+---
+title: "Presentación del curso"
+author: "Luz Frias"
+date: "2016-10-10"
+output:
+  revealjs::revealjs_presentation:
+    pandoc_args: [ "--slide-level", "1" ]
+    transition: none
+    background_transition: none
+    reveal_options:
+      controls: false
+      width: 1200
+---
+
+## Hola!
+
+## Programa
+
+* Preparación de datos
+* Visualización
+* Reducción de dimensiones
+* Aprendizaje supervisado
+* Aprendizaje no supervisado
+* Grafos
+* Procesamiento de lenguaje natural
+* R, R and R...
+
+## Organización
+
+* Sesiones muy prácticas
+* Retos
+* Estado del arte
+    * Meetups
+        * [Machine Learning](http://www.meetup.com/MachineLearningSpain/)
+        * [Usuarios de R](http://www.meetup.com/Grupo-de-Usuarios-de-R-de-Madrid/)
+        * [Data Beers](http://databeers.tumblr.com/)
+    * Artículos
+    * Blogs
+    * Redes sociales
+
+## Herramientas del grupo
+
+* GitHub
+    * [Presentaciones](https://github.com/koldLight/r4ds)
+    * Retos: github de cada uno
+    
+* [Slack](https://r4ds.slack.com/)
+    * Dudas retos
+    * Aviso de eventos
+    * Artículos interesantes
+    
+* Google Calendar
+    * Eventos
+    * Todos somos administradores
+
+* ¿Otros?
+
+## Retos
+
+* En vuestro GitHub
+    * Una carpeta por sesión con nombres del estilo: 01_intro, 02_preparacion, ...
+    * Estructura de carpetas
+        * dat: conjuntos de datos
+        * src: código (.Rmd y archivos generados)
+* Rmarkdown
