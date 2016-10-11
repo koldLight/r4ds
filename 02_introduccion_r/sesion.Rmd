@@ -1,0 +1,89 @@
+---
+title: "Introducción a R"
+author: "Luz Frias"
+date: "2016-10-10"
+output:
+  revealjs::revealjs_presentation:
+    pandoc_args: [ "--slide-level", "1" ]
+    transition: none
+    background_transition: none
+    reveal_options:
+      controls: false
+      width: 1200
+---
+
+## Índice
+
+* Presentación R y alternativas
+* Instalación
+* Paquetes
+
+## R
+
+* Open source
+* Lenguaje de programación orientado a la computación estadística
+* Extensible fácilmente a través de paquetes
+* Elegante y potente
+
+## Python vs R
+
+* La principal alternativa open source para analítica de datos a R es Python
+* Python es un lenguaje de programación general
+* Existen librerías especializadas para la ciencia de datos:
+
+    * numpy
+    * pandas
+    * scikit-learn
+    * ...
+    
+* [Infografía](http://blog.datacamp.com/wp-content/uploads/2015/05/R-vs-Python-216-2.png)
+
+## Instalación
+
+* [R](https://github.com/rstudio/rstudio/)
+* [RStudio](https://www.rstudio.com/products/rstudio/download3/)
+
+## Paquetes
+
+* Repositorios oficial: [CRAN](https://cran.r-project.org/)
+* Alternativas: devtools. Permite instalar paquetes (o versiones) que no están en CRAN:
+
+    * GitHub
+    * Bitbucket
+    * Urls
+    * ...
+
+* `01_paquetes.R`
+
+## Tipos básicos
+
+* logical
+* integer
+* double
+* character
+* complex
+
+## Especiales
+
+* NULL
+* NA
+* Inf, -Inf
+* NaN
+
+## Objetos comunes
+
+* vector: los elementos deben ser del mismo tipo
+* list: los elementos pueden ser de tipos distintos
+* factor: para datos ordenados o categóricos. E.g.: precio (barato, normal, caro), sexo (hombre, mujer)
+* matrix: vector de dos dimensiones
+* data.frame: con filas y columnas. Usualmente las columnas son características y las filas observaciones
+
+Ver ejercicios específicos
+
+## Otros
+
+[Functional R](http://adv-r.had.co.nz/Functionals.html)
+[Guía de estilo](http://adv-r.had.co.nz/Style.html)
+[RMarkdown](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
+[Reference Card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)
+
