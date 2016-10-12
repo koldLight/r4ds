@@ -82,8 +82,9 @@ Ver ejercicios específicos
 
 ## Otros
 
-[Functional R](http://adv-r.had.co.nz/Functionals.html)
-[Guía de estilo](http://adv-r.had.co.nz/Style.html)
-[RMarkdown](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
-[Reference Card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)
+* [Functional R](http://adv-r.had.co.nz/Functionals.html)
+* [Guía de estilo](http://adv-r.had.co.nz/Style.html)
+* [RMarkdown](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
+* [Reference Card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)
+
 
