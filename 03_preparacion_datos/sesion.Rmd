@@ -1,0 +1,63 @@
+---
+title: "Introducción a R"
+author: "Luz Frias"
+date: "2016-10-25"
+output:
+  revealjs::revealjs_presentation:
+    pandoc_args: [ "--slide-level", "1" ]
+    transition: none
+    background_transition: none
+    reveal_options:
+      controls: false
+      width: 1200
+---
+
+## Índice
+
+* Introducción preparación datos
+* Acceso y lectura
+* Transformaciones (filtros, agrupaciones, ...)
+
+## Introducción preparación de datos
+
+* Es donde se invierte mayor cantidad de tiempo
+* El resultado del trabajo de análisis (modelo predictivo u otros) depende en gran parte de esto
+* En general, queremos transformarlo a:
+
+    * Cada cosa, en su tipo de dato y formato común
+    * Formato tabular (filas son observaciones, columnas son atributos)
+
+## Acceso y lectura
+
+* Muy diversas formas de datos:
+
+    * JSON
+    * XML (y HTML como caso extendido)
+    * CSV
+    * Textos
+    * Imágenes, sonidos
+    * Binarios, formatos propietarios (e.g. excel)
+
+## Acceso y lectura
+
+* Y diferentes formas de recuperarlos:
+
+    * REST API
+    * Ficheros
+    * Bases de datos relacionales y no relacionales
+    * Web scraping
+
+## Transformaciones
+
+* Hace falta transformar los datos para sacar conclusiones:
+
+    * Filtros
+    * Ordenación
+    * Generación de nuevos atributos
+    * Agrupación
+    * ...
+    
+* Para volúmenes grandes de datos, podemos utilizar:
+
+    * dplyr
+    * data.table
