@@ -8,7 +8,7 @@
 # Instalación en local:
 # https://www.tutorialspoint.com/sqlite/sqlite_installation.htm
 
-library("sqldf")
+library(sqldf)
 
 # Establecemos conexión
 file.create("test.db") # una base de datos vacía
@@ -23,6 +23,7 @@ dbListFields(con, "state")
 
 # Queries escritura (delete, update, insert, create table, ...)
 dbSendQuery(con, "delete from state where row_names = 'Maine'")
+# comprobación: dbGetQuery(con, "select * from state where row_names = 'Maine'")
 
 # Queries lectura (select)
 dbGetQuery(con, "select row_names, Income from state where Income < 3800")
