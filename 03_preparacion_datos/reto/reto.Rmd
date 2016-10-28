@@ -1,0 +1,89 @@
+---
+title: "Reto sesión 2"
+author: "Luz Frias"
+date: "2016-10-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Reto sesión 2
+
+Os propongo dos opciones a elegir. La primera, un ejercicio guiado. La segunda, uno libre a definir por vosotros.
+
+En cualquier caso, la solución debe entregarse en Rmarkdown, combinando texto (una descripción de los pasos que vas siguiendo junto con el análisis de resultados) y el código necesario.
+
+El Rmarkdown entregado debe ser __reproducible__. Es decir, si lo cargas en una sesión limpia (sin variables en el entorno) y lo ejecutas, debe funcionar. Si necesita datos extra, súbelos junto con tu Rmarkdown a [GitHub](https://github.com/).
+
+## Alternativa 1 - ejercicio guiado
+
+El ejercicio consiste en extraer datos de los servicios públicos de bicicletas de distintas ciudades, como BiciMAD de Madrid, Vélib' de París, etc.
+
+La documentación de la API está disponible en [citybik](https://api.citybik.es/v2/).
+
+### 1. Redes de bicis por país
+
+Lista la cantidad de redes de bici que hay por país, en forma de data.frame siendo la primera columna el código del país y la segunda el número de redes de bicicletas. Lístado de manera ordenada, de forma que la primera fila sea el país con más redes y el último con menos
+
+### 2. Bicis disponibles en una estación de BiciMAD
+
+Crea una función que te devuelva el número de bicis disponibles en una estación de BiciMAD. Cada llamada a la función hará:
+
+1. Una petición para bajarse los datos de la red de BiciMAD
+2. Entre los resultados obtenidos, identificar la estación solicitada mediante el parámetro
+3. Devolver el número de bicis disponibles
+
+Si no encuentra ningún registro por nombre de estación, devolverá NA.
+
+Ejemplos de llamdas válidas:
+
+```{r, eval = FALSE}
+bicis_disponibles("Colombia")
+bicis_disponibles("Conde de Casal")
+bicis_disponibles("Valderribas")
+```
+
+### 3. Mapa de disponibilidad de BiciMAD
+3. Pinta en un mapa la disponibilidad (la API devuelve un color por estación, que puede ser: verde, amarillo, rojo o gris) de todas las estaciones de BiciMAD. Aquí tienes un ejemplo de cómo pintar puntos geolocalizados con ggmap, que es un paquete wrapper de la API de Google Maps.
+
+```{r, message = FALSE}
+library(ggmap)
+# Tengo un data.frame con colores, por ejemplo
+df <- data.frame(lat = c(40.43739,  40.4026,   40.41678, 40.41843),
+                 lon = c(-3.70377,  -3.711382, -3.70379, -3.658757),
+                 color = c("green", "red",     "yellow", "gray"))
+
+# Geolocalizo Madrid
+madrid <- geocode('madrid')
+
+# Descargo el mapa desde Google Maps
+map.madrid <- get_map( location = as.numeric(madrid),
+                       color = "color",
+                       maptype = "roadmap",
+                       zoom = 13)
+
+# Lo pinto, añadiendo mis puntos
+# nota: fíjate en el + del final de las líneas, todo junto es una única
+#  sentencia de R
+ggmap(map.madrid) + 
+  # juega con el valor de size una vez tengas más datos
+  geom_point(aes(x = lon, y = lat, color = color), size = 5, data = df) +
+  # ggmap asigna un color por defecto a cada valor del parámetro "color"
+  # si quieres que te mapee a colores que tengan sentido, tienes que hacer
+  #  algo así:
+  scale_colour_manual(values = c("green" = "green",
+                                 "yellow" = "yellow",
+                                 "red" = "red",
+                                 "gray" = "gray"))
+
+```
+
+## Alternativa 2 - proposición libre
+
+Encuentra una o varias APIs que te apetezca investigar y crea un documento con el análisis realizado. Hay un montón disponibles, [aquí](https://github.com/toddmotto/public-apis) tienes un listado.
+
+Alguna de las APIs más interesantes (Twitter, GitHub, ...) requieren algún método de autenticación: un header de Authentication con un API Key, mecanismos de basic auth o incluso OAuth2. El paquete `httr` provee mecanismos para facilitar esto. Las [vignettes del paquete](https://github.com/hadley/httr/tree/master/demo) en GitHub incluyen unos cuántos ejemplos de cómo realizarlo.
+
+Si necesitas incluir datos propios, crea una carpeta `dat` conteniéndolos.
