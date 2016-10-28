@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Reto sesión 2
+# Introducción
 
 Os propongo dos opciones a elegir. La primera, un ejercicio guiado. La segunda, uno libre a definir por vosotros.
 
