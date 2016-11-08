@@ -41,7 +41,6 @@ flights.dt[, gain := arr_delay - dep_delay]
 
 # Resumen
 flights.dt[, .(delay = mean(dep_delay, na.rm = TRUE))]
-summarise(flights.dt, delay = mean(dep_delay, na.rm = TRUE))
 
 # Nuevas columnas por agrupaciones
 flights.dt[, c("min_ori_delay", "max_ori_delay") := 
