@@ -51,6 +51,7 @@ ggplot(d, aes(carat, price)) +
 ggplot(diamonds, aes(x = clarity, fill = cut)) +
   geom_bar(show.legend = FALSE) +
   facet_grid(cut ~ color)
+# para omitir una parte del grid, usa el punto. E.g. facet_grid(cut ~ .) o facet_grid(. ~ color)
 
 # por defecto, respetan la misma escala de x e y, a no ser que le indiquemos lo contrario
 ggplot(diamonds, aes(clarity, fill = cut)) +
