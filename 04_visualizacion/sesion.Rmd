@@ -1,0 +1,55 @@
+---
+title: "Visualización de datos en R"
+author: "Luz Frias"
+date: "2016-11-07"
+output:
+  revealjs::revealjs_presentation:
+    pandoc_args: [ "--slide-level", "1" ]
+    transition: none
+    background_transition: none
+    reveal_options:
+      controls: false
+      width: 1200
+---
+
+## Índice
+
+* Introducción visualización
+* ggplot
+* interactivos
+* grafos
+
+## Introducción visualización de datos
+
+* Es parte del análisis exploratorio de los datos
+* De un vistazo, podemos entender:
+
+    * Distribuciones
+    * Relaciones entre atributos
+    * ...
+
+## La importancia del tipo de gráfico
+
+* [Chart suggestion](http://www.cognoschina.net/home/attachment/200912/2/1177_12597621035pTY.png)
+* Cómo no hacerlo: un [ejemplo](https://www.datanalytics.com/2011/11/08/bump-charts-para-comparar-graficamente-proporciones-entre-periodos/): ¿qué cambiarías?
+
+## ggplot
+
+* Basado en [Grammar of Grahpics](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448)
+* Se definen gráficos con instrucciones de alto nivel
+* Muy flexible
+* El más popular de R
+
+## Grammar of graphics
+
+* Definición de bloques que forman un gráfico. Pueden ser:
+
+    * datos
+    * componentes estéticos
+    * geometrías
+    * transformaciones estadísticas
+    * escalas
+    * coordenadas
+    * posicionamiento
+    * facets
+
