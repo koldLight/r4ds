@@ -10,7 +10,7 @@
 # cheat.sheet https://s3.amazonaws.com/assets.datacamp.com/img/blog/data+table+cheat+sheet.pdf
 
 library(data.table)
-library(nycflights.dt13)
+library(nycflights13)
 
 # Si tenemos que leer un dataset de fichero, es mucho más rápido utilizar
 #  fread (del paquete data.table) que read.table
