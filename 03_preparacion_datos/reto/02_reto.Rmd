@@ -1,0 +1,41 @@
+---
+title: "Reto sesión 3"
+author: "Luz Frias"
+date: "2016-11-11"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+Os propongo dos opciones a elegir. La primera, un ejercicio guiado. La segunda, uno libre a definir por vosotros.
+
+La solución debe entregarse en Rmarkdown, combinando texto (una descripción de los pasos que vas siguiendo junto con el análisis de resultados) y el código necesario.
+
+El Rmarkdown entregado debe ser __reproducible__. Es decir, si lo cargas en una sesión limpia (sin variables en el entorno) y lo ejecutas, debe funcionar.
+
+Si el fichero de datos a usar es muy grande, no lo subas a tu repositorio junto con el Rmarkdown, solo indica de dónde obtenerlo.
+
+## Alternativa 1 - Nombres en EEUU
+
+Los datos están disponibles [aquí](https://dl.dropboxusercontent.com/u/10368281/StateNames.csv). Contesta a las siguientes preguntas utilizando el paquete que prefieras: `data.table` o `dplyr`.
+
+_Nota_: si usas dplyr, puedes convertir el dataframe con `tbl_df`, para no imprimir accidentalmente mucha cantidad de datos por pantalla.
+
+* ¿Cuántos registros hay de hombres y cuántos de mujeres?
+* ¿Cuál es la longitud media de los nombres por año?
+* ¿Cuál es el nombre más popular de mujer por año a partir del 2000? Ordena el resultado cronológicamente
+* Encuentra los 10 nombres más unisex de 2014. Es decir, que la proporción de chicas / chicos sea lo más cercana al 50% posible
+* ¡Un nombre hipster! Extrae el conteo del nombre Leo cada 5 años (p.ej. en los años múltiplos de 5), mostrando el agregado de ese año
+
+## Alternativa 2 - Ejercicio libre
+
+Encuentra un dataset que te apetezca investigar, y extrae conclusiones interesantes de él haciendo operaciones de agrupación, tendencias, ...
+
+¡Tienes para elegir en internet! Algunos repositorios:
+
+* [Datasets de Kaggle](https://www.kaggle.com/datasets)
+* [Listado en GitHub por temática](https://github.com/caesar0301/awesome-public-datasets)
