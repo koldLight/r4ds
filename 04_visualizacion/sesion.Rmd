@@ -15,6 +15,7 @@ output:
 ## Índice
 
 * Introducción visualización
+* Principios básicos
 * ggplot
 * interactivos
 * grafos
