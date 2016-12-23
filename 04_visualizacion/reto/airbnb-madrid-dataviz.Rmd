@@ -1,0 +1,291 @@
+---
+title: "Explorando Airbnb"
+author: "Luz Frias"
+output: html_document
+---
+
+## Introducción ##
+
+El objetivo de este análisis visual es identificar el uso que se hace de la plataforma Airbnb en Madrid.
+
+Airbnb sostiene que su propósito es promover la economía de compartir. Es decir, que yo alquile mi casa mientras estoy de vacaciones en otro apartamento también ofrecido por una persona como yo, en el lugar que quiera visitar. Por el contrario, los negocios hoteleros se quejan de que realmente gran cantidad de los anfitriones en Airbnb hacen negocio con la plataforma, creando economía sumergida e incumpliendo medidas de seguridad, como la de exigir la identidad de los clientes. Más info [aquí](http://insideAirbnb.com/get-the-data.html).
+
+Vamos a explorar la oferta de Airbnb en Madrid y a intentar detectar el porcentaje de alojamientos que se ofertan con fines de compartir, con respecto a los que hacen negocio con la plataforma.
+
+```{r, echo=FALSE, message=FALSE}
+# Las librerías necesarias son las siguientes
+library(ggplot2)
+library(ggthemes)
+library(scales)
+library(data.table)
+library(rgdal)
+library(maptools)
+library(ggmap)
+library(RColorBrewer)
+```
+
+### Los datos ###
+
+Los datos están publicados en [insideAirbnb](http://insideAirbnb.com/get-the-data.html). Tienen la siguiente pinta:
+
+```{r, echo=FALSE}
+listings <- fread("../dat/listings.csv")
+
+# Algunas conversiones de tipo:
+
+# A factors
+listings$neighbourhood <- as.factor(listings$neighbourhood)
+listings$neighbourhood_group <- as.factor(listings$neighbourhood_group)
+listings$room_type <- as.factor(listings$room_type)
+
+# A fecha
+listings$last_review <- as.Date(listings$last_review)
+
+# Veamos qué pinta tienen los datos
+head(listings)
+```
+
+Hay un porcentaje considerable (`r nrow(listings[listings$number_of_reviews == 0, ])` de `r nrow(listings)`) de apartamentos que, aunque estén anunciados, nunca han sido alquilados. Vamos a eliminarlos de nuestro dataset, ya que queremos concentrar el análisis en aquellos que sí se alquilan.
+
+```{r, echo=FALSE}
+listings <- listings[listings$number_of_reviews > 0, ]
+```
+
+También utilizaremos el mapa de los barrios de Madrid para alguna de las visualizaciones.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+madrid.map <- readOGR("../dat/neighbourhoods.geojson", "OGRGeoJSON")
+```
+
+## Distribución de los alojamientos ##
+
+### Distribución por tipos ###
+
+En Airbnb existen tres tipos de alojamiento:  
+
+* Apartamento completo
+* Habitación privada
+* Habitación compartida
+
+La distribución es la siguiente:
+
+```{r, echo=FALSE}
+# Preparación del gráfico
+listings.tmp <- listings[, .(count = .N), by=.(room_type)]
+
+ggplot(listings.tmp, aes(reorder(room_type, count), count, fill=room_type)) +
+  geom_bar(stat="identity") +
+  labs(x="Room Type", y="# of rooms") +
+  geom_text(aes(label=count), hjust=-0.2, vjust=-0.4) + 
+  # El expand es para añadir un poco de espacio en el eje y, y evitar
+  #  que se corte el texto
+  scale_y_continuous(expand=c(0.1, 0)) +
+  coord_flip() +
+  theme_hc() +
+  scale_fill_hc()
+```
+
+### Distribución por zonas ###
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# Primero, agrupamos para contar el número de alojamientos por barrio
+listings.tmp <- listings[, .(count = .N), by=.(neighbourhood)]
+
+# Luego, convertimos el mapa en data.frame y añadimos la info calculada arriba
+map.tmp <- fortify(madrid.map, region = "neighbourhood")
+map.tmp <- merge(map.tmp, listings.tmp, by.x = "id", by.y = "neighbourhood", all.x = TRUE)
+map.tmp[is.na(map.tmp$count), ]$count <- 0
+map.tmp <- map.tmp[order(map.tmp$order), ]
+
+# Nos creamos una paleta de colorbrewer para el gradiente
+# Referencia útil: https://bl.ocks.org/mbostock/5577023
+palette.tmp <- colorRampPalette(rev(brewer.pal(11, "RdYlGn")), space="Lab")
+
+# Pintamos el mapa
+ggplot() +
+  geom_polygon(data = map.tmp, 
+               aes(x = long, y = lat, group = group, fill = count)) + 
+  coord_map() +
+  labs(x="", y="", fill="# rooms") +
+  theme_hc() +
+  theme(axis.text = element_blank(), panel.grid = element_blank(),
+        axis.ticks = element_blank()) +
+  #expand_limits(x=map.tmp$long, y=map.tmp$lat) +
+  scale_fill_gradientn(colours = palette.tmp(max(map.tmp$count)))
+```
+
+Vemos que la zona centro concentra la mayoría de los apartamentos que se alquilan por Airbnb. Si hacemos zoom sobre esa zona, esta es la oferta de apartamentos, en la que el tamaño del punto refleja la popularidad del apartamento.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+madrid <- geocode("Glorieta de Bilbao, Madrid")
+# Jugando con el zoom conseguimos, o dejar fuera del mapa menos puntos,
+# o hacer más zoom en la zona central
+gmap.tmp <- get_map( location = as.numeric(madrid),
+                     color = "color",
+                     maptype = "roadmap",
+                     scale = 2,
+                     zoom = 13)
+
+ggmap(gmap.tmp) +
+  geom_point(aes(x = longitude, y = latitude, color = room_type,
+                 size = reviews_per_month),
+             data=listings) +
+  labs(x="", y="", color="Room Type", size="Reviews per month") +
+  theme(axis.text = element_blank(), panel.grid = element_blank(),
+        axis.ticks = element_blank()) +
+  theme_hc() +
+  scale_color_hc()
+```
+
+Vemos que la zona centro concentra la mayoría de los apartamentos que se alquilan por Airbnb. Vamos a ver el detalle de la cantidad de apartamentos por tipo y barrio.
+
+```{r, echo=FALSE}
+# Preparación del gráfico
+listings.tmp <- listings[, .(count = .N), by=.(neighbourhood_group, room_type)]
+ordered.neighbourhouds <- listings.tmp[, sum(count), 
+                                       by=neighbourhood_group][order(-V1), neighbourhood_group]
+listings.tmp[, neighbourhood_group := factor(neighbourhood_group,
+                                             levels = ordered.neighbourhouds)]
+
+# Lo pintamos, en escala logarítmica
+breaks <- as.vector(c(10, 50, 100, 500, 1000, 2500))
+
+ggplot(listings.tmp, aes(neighbourhood_group, count, fill=room_type)) +
+  geom_bar(position="dodge", stat="identity") +
+  labs(x="Neigbourhoud", y="# of rooms") +
+  scale_y_log10(breaks = breaks) +
+  theme_hc() +
+  theme(axis.text.x = element_text(angle = 35, hjust = 1)) +
+  scale_fill_hc()
+```
+
+**Atención!** Este gráfico tiene escala logarítmica, para poder observar los detalles de todos los barrios (con escala normal, sólo seríamos capaces de distinguir los de la zona Centro).  
+
+Observamos lo siguiente:
+
+* Aunque la plataforma permite ofrecer alojamientos de habitación compartida, estos son muy poco populares entre los usuarios.
+* La mayoría de los alojamientos se concentran en la zona centro, siento también populares los barrios de Chamberí, Salamanca, Arganzuela y Retiro.
+* Por ello, parece que la oferta está altamente relacionada con el nivel de atractivo turístico de la zona.
+
+### Distribución por anfitrión ###
+
+Una posible forma de distinguir los alojamientos que se ofertan con fines de negocio, es observar cuántos de ellos pertenecen a un usuario que oferta más de uno. Esto hace que sea muy poco probable que el anfitrión viva en él, sino que por el contrario, disponga de un conjunto de viviendas que alquila la mayor parte del año.
+
+Otra forma es la disponibilidad. Si yo ofrezco mi vivienda, tendrá una disponibilidad relativamente baja (<=90 días al año).
+
+Vamos a ver la distribución de los apartamentos en función del tipo de anfitrión (sólo ofrece ese alojamiento, o tiene varios) con respecto a la disponibilidad anual en días. Quitaremos los alojamientos menos populares (los de habitación compartida).
+
+```{r, echo=FALSE}
+# Preparación de los datos
+listings.tmp <- listings[room_type != "Shared room", ]
+listings.tmp[, host_has_multiple_rooms := calculated_host_listings_count > 1]
+
+# Pintamos
+ggplot(listings.tmp, aes(x=availability_365, fill=host_has_multiple_rooms)) +
+  geom_density(alpha=0.5) +
+  facet_grid(room_type ~ .) +
+  labs(x="Availability (days/year)", y="Offer density",
+       fill="Host with multiple rooms offered") +
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
+        panel.grid = element_blank()) +
+  theme_hc() +
+  scale_fill_hc()
+```
+
+Intuitivamente:
+
+* Los alojamientos concentrados a la izquierda (baja disponibilidad) y ofertados por anfitriones que sólo tienen un alojamientos, son más susceptibles de promover la economía de compartir, siguiendo la filosofía de Airbnb.
+* En cambio, los concentrados a la derecha y ofertados por anfitriones con varios alojamientos, son potencialmente usados para hacer negocio. Vemos que este caso concentra la mayor parte de la oferta.
+
+Otros dos usos menos evidentes son:
+
+* Poca disponibilidad, ofertados por anfitriones con varios alojamientos. Podría tratarse de personas que se encargan de gestionar el alquiler durante épocas vacacionales de apartamentos de varias personas.
+* Alta disponibilidad, ofertados por anfitriones con un único alojamiento. Es un escenario bastante habitual. Podría tratarse de:
+
+    * Para las habitaciones privadas, personas que ofertan una habitación que tienen libre.
+    * En el caso de los alojamientos completos, personas con una segunda vivienda, del que posiblemente sacan más beneficios alquilándolo para estancias cortas con respecto a alquileres clásicos de estancia continuada. Esto nos lleva a la siguiente pregunta... ¿cómo de rentable es Airbnb?
+
+## Rentabilidad ##
+
+Vamos a utilizar los mismos parámetros que usa insideairbnb para sus análisis (publicados [aquí](http://insideairbnb.com/madrid/#)). Son:
+
+* Una tasa del 50% de usuarios que dejan una review tras el alquiler
+* Una duración media del alquiler de 3 noches, a no ser que el número mínimo de noches requerido sea superior
+* Una ocupación máxima del 70%
+
+Sabiendo esto, vamos a calcular la ocupación e ingresos mensuales por alojamiento.
+
+```{r, echo=FALSE, warning=FALSE}
+calculate_occupancy_and_income <- function(dt) {
+  # Parámetros
+  review_rate <- 0.5
+  max_occupancy_rate <- 0.7
+  
+  # Calculamos la ocupación aproximada
+  dt[, monthly_occupancy_approx :=
+               min(
+                 max(minimum_nights, 3) * (reviews_per_month / review_rate),
+                 0.7 * availability_365 / 12),
+             by=id, ]
+  # Calculamos los ingresos mensuales aproximados
+  dt[, monthly_income_approx := monthly_occupancy_approx * price]
+  return(dt)
+}
+
+# Preparación de los datos
+listings.tmp <- listings[room_type != "Shared room", ]
+calculate_occupancy_and_income(listings.tmp)
+
+# Vamos a mostrar la disponibilidad, ocupación, precio y rentabilidad por barrio
+listings.tmp <- listings.tmp[, .(neighbourhood_group, room_type, price, availability_365, monthly_occupancy_approx, monthly_income_approx)]
+listings.tmp <- melt(listings.tmp, id.vars = c("neighbourhood_group", "room_type"))
+listings.tmp <- listings.tmp[, .(value_median = median(value)),
+                             by=.(neighbourhood_group, room_type, variable)]
+
+# Normalizamos cada una de las variables
+listings.tmp[, max_value := max(value_median), by=.(room_type, variable) ]
+listings.tmp[, min_value := min(value_median), by=.(room_type, variable) ]
+listings.tmp[, normalized := (value_median-min_value)/(max_value-min_value)]
+
+# Ordenados por rentabilidad mensual de casas completas
+listings.tmp[, var_to_order := 0 ]
+listings.tmp[ variable == "monthly_income_approx" & room_type == "Entire home/apt",
+              var_to_order := value_median ]
+
+# Lo representamos
+palette.tmp <- colorRampPalette(rev(brewer.pal(11, "RdYlGn")), space="Lab")
+ggplot(listings.tmp, aes(variable, reorder(neighbourhood_group, var_to_order))) +
+  geom_tile(aes(fill=normalized)) +
+  scale_fill_gradientn(colours = palette.tmp(100)) +
+  facet_wrap(~ room_type, dir="h") +
+  labs(x="Variable", y="", fill="Normalized median value") +
+  theme_hc() +
+  theme(axis.text.x = element_text(angle = 20, hjust = 1))
+```
+
+¡Parece un buen negocio alquilar habitaciones o casas junto al aeropuerto! Seguidos de Centro y Salamanca.
+
+Como conclusión, vamos a mostrar los ingresos mensuales aproximados por alojamiento en base al tipo de disponibilidad (alta o baja), tipo de anfitrión (tiene un único alojamiento ofertado o varios) y el tipo de habitación.
+
+```{r, echo=FALSE}
+# Preparación de los datos
+listings.tmp <- listings[room_type != "Shared room", ]
+listings.tmp[, host_has_multiple_rooms := calculated_host_listings_count > 1]
+listings.tmp[, high_availability := availability_365 > 90]
+calculate_occupancy_and_income(listings.tmp)
+
+ggplot(listings.tmp, aes(high_availability, monthly_income_approx,
+      colour=host_has_multiple_rooms)) +
+  geom_jitter() +
+  facet_wrap(~ room_type, dir="v") +
+  labs(x="High availability", y="Monthly income approx.",
+       colour="Host with multiple rooms offered") +
+  theme_hc() +
+  scale_color_hc()
+```
+
+Parece que sí se puede hacer negocio con la plataforma, pero los ingresos son aparentemente más variables (tanto por encima como por debajo) que con un alquiler tradicional (de larga estancia).
+
+## Conclusiones ##
+
+Hemos explorado visualmente los datos de Airbnb en Madrid y podemos concluir que hay un alto porcentaje de apartamentos que se ofertan con fines de negocio, de donde se puede sacar potencialmente una buena rentabilidad mediante el modelo de alquileres de corta estancia.
