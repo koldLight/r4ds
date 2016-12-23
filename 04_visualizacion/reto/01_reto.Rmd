@@ -1,0 +1,48 @@
+---
+title: "Reto sesión 5"
+author: "Luz Frias"
+date: "2016-12-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+La solución debe entregarse en Rmarkdown, combinando texto (una descripción de los pasos que vas siguiendo junto con el análisis de resultados) y el código necesario.
+
+El Rmarkdown entregado debe ser __reproducible__. Es decir, si lo cargas en una sesión limpia (sin variables en el entorno) y lo ejecutas, debe funcionar.
+
+Si el fichero de datos a usar es muy grande, no lo subas a tu repositorio junto con el Rmarkdown, solo indica de dónde obtenerlo. Si su tamaño es razonable, inclúyelo en una carpeta `dat` junto con tu Rmarkdown.
+
+## Una historia contada con gráficos
+
+Encuentra datos que te apetezca investigar y crea un documento compuesto por gráficos, con el análisis realizado. Puedes inspirarte en ejemplos similares, como:
+
+* [¿A dónde me mudo?](http://serialized.net/2012/02/using-r-and-ggplot2-to-contemplate-relocation/)
+* [Explorando datos metereológicos](http://forensics.umass.edu/classes/cs691BL/Assign4-Weather-soln.pdf)
+
+Los datos los puedes coger de datasets existentes, o recuperados como peticiones a APIs.
+
+Algunos repositorios de datasets, con muchas opciones donde elegir:
+
+* [Kaggle datasets](https://www.kaggle.com/datasets)
+* [KDnuggets](http://www.kdnuggets.com/datasets/index.html)
+* [Sugerencias en Quora](https://www.quora.com/What-are-some-interesting-public-datasets-to-visualize)
+* [Sugerencias en DataQuest](https://www.dataquest.io/blog/free-datasets-for-projects/)
+
+
+Si te encuentras con que tu fichero de datos es muy grande, y pierdes mucho tiempo en tratarlo y pintar gráficos, coge una muestra aleatoria más tratable (p.ej. 1000 o 10000 filas). Para esto, puedes utilizar `sample`. Por ejemplo:
+
+```{r}
+# Mi data.frame, de 1 millón de filas
+df <- data.frame(a = runif(1e6), b = runif(1e6))
+nrow(df)
+# Seteo la semilla, para tener siempre el mismo resultado
+set.seed(1234)
+# Cojo 1000 filas aleatoriamente utilizando sample
+df <- df[sample(1:nrow(df), size = 1000), ]
+nrow(df)
+```
