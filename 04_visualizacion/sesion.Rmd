@@ -87,6 +87,7 @@ output:
 * [Pomelos](https://www.datanalytics.com/2013/08/27/el-pomelazo-del-csic/)
 * [Proporciones](https://www.datanalytics.com/2013/03/19/mapas-realmente-necesarios/)
 * [El engaño](https://www.datanalytics.com/2011/01/31/un-grafico-enganabobos/)
+* [Blog dedicado a los gráficos sin sentido](http://viz.wtf/)
 
 ## ggplot
 
