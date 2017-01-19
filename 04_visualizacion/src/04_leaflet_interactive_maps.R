@@ -18,7 +18,7 @@ velib$popup <- paste0("<span><strong>",      velib$name,        "</span></strong
 # Pintamos, de manera similar a con ggplot2
 map <- leaflet(velib) %>%
   addProviderTiles("CartoDB.Positron") %>%
-  addCircleMarkers(lng = ~lon, lat = ~lat, popup = ~popup,
+  addCircleMarkers(radius = 2, opacity = 1, lng = ~lon, lat = ~lat, popup = ~popup,
                    color = ~pick_availability, group = "Pick availability") %>%
   addCircleMarkers(radius = 2, opacity = 1, lng = ~lon, lat = ~lat, popup = ~popup,
                    color = ~drop_availability, group = "Drop availability") %>%

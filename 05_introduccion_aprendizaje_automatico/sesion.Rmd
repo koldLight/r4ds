@@ -12,14 +12,6 @@ output:
       width: 1200
 ---
 
-## Índice
-
-* Aprendizaje autom
-* Principios básicos
-* ggplot
-* interactivos
-* grafos
-
 ## Aprendizaje automático
 
 * Trata de crear programas que generalizan comportamientos a través de información suministrada a base de ejemplos
@@ -190,7 +182,7 @@ Otra forma de verlo:
 ## Métricas de evaluación - Clasificación
 
 * Curva ROC (Característica operativa del receptor): Ilustra la sensibilidad de un sistema binario. Una matriz de confusión es un punto de la curva ROC, dependiendo de donde pongamos el corte de decisión
-* AUC (Área bajo la curva): se suele usar como medida estándar del rendimiento del modelo. El máximo teórico es 
+* AUC (Área bajo la curva): se suele usar como medida estándar del rendimiento del modelo. El máximo teórico es 1 
 
 ![](img/roc.jpg)
 
