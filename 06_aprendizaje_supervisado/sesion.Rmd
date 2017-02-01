@@ -1,0 +1,78 @@
+---
+title: "Aprendizaje supervisado"
+author: "Luz Frias"
+date: "2017-02-01"
+output:
+  revealjs::revealjs_presentation:
+    pandoc_args: [ "--slide-level", "1" ]
+    transition: none
+    background_transition: none
+    reveal_options:
+      controls: false
+      width: 1200
+---
+
+## Regresión lineal
+
+* Solución muy simple, pero que en ocasiones funciona bastante bien
+* Muy apropiada si la relación subyacente entre variables predictoras y objetivo es linear
+* Métodos más complejos son una generalización de la regresión lineal
+* Fácilmente interpretable (caja blanca)
+
+## Regresión lineal
+
+* Aproxima una recta utilizando mínimos cuadrados
+* Ver 01_linear_regression
+
+## Regresión lineal
+
+* Pros:
+
+    * Simple de calcular
+    * Interpretable
+
+* Cons:
+
+    * Sensibles a outliers
+    * Malos resultados si la relación no es lineal
+    * Mucho sesgo (tiene a underfit)
+
+## Árboles de decisión
+
+* Dividen el espacio de las variables predictoras.
+* La decisión a tomar sigue una estructura de árbol, por lo que es fácilmente interpretable
+* Suele funcionar bastante bien
+* Se pueden aplicar en problemas de regresión y clasificación
+
+## Árboles de decisión - algoritmo
+
+1. Se elige la variable más predictora (la que mejor separa)
+2. Se sigue dividiendo hasta que la división es pura o no existen más variables.
+
+## Árboles de decisión - divisiones
+
+* Si una división deja a un lado observaciones de una clase y a otro los de otra, se considera pura
+* La impureza usualmente se mide con la entropía. A menor entropía (mayor homogeneidad), mejor división
+
+## Árboles de decisión - poda
+
+* El algortimo de construcción de un árbol suele causar over-fitting
+* Se soluciona podando las ramas del árbol. Para ello se saca del entrenamiento un conjunto de test, y se poda donde se minimiza el error en este conjunto
+
+## Árboles de decisión
+
+* Ver 02_decision_tree
+
+## Árboles de decisión
+
+* Pros:
+
+    * Fáciles de interpretar
+    * Computacionalmente poco costosos
+    * Útil para extraer importancia de variables
+
+* Cons
+
+    * Inestabilidad: un pequeño cambio en el dataset, suele cambiar el árbol
+    * Provocan overfitting o underfitting fácilmente
+    * Grandes árboles complican la interpretación
