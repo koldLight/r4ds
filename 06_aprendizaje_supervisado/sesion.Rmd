@@ -76,3 +76,195 @@ output:
     * Inestabilidad: un pequeño cambio en el dataset, suele cambiar el árbol
     * Provocan overfitting o underfitting fácilmente
     * Grandes árboles complican la interpretación
+
+## Redes neuronales
+
+* Similares al comportamiento de las neuronas humanas
+* Se consideran un aproximador universal a cualquier tipo de función
+
+## Redes neuronales - referencias
+
+* [Redes neuronales con TensorFlow playground ](https://cloud.google.com/blog/big-data/2016/07/understanding-neural-networks-with-tensorflow-playground)
+* [Guía visual e interactiva](https://jalammar.github.io/visual-interactive-guide-basics-neural-networks)
+* [Efectividad de las RNN](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
+
+## Redes neuronales
+
+![](http://www.texample.net/media/tikz/examples/PNG/neural-network.png)
+
+## Neuronas
+
+![](http://www.rna.50webs.com/images_tutorial/Image5.gif)
+
+## Función de activación
+
+* Transforma las entradas ponderadas en una salida
+* Se diferencian especialmente en el rango de salida (-Inf, Inf), (-1, 1), ...
+* Para algunas funciones de activación, el rango de entrada es estrecho. En estos casos, es importante normalizar (centrar y escalar)
+
+## Función de activación
+
+![](https://qph.ec.quoracdn.net/main-qimg-01c26eabd976b027e49015428b7fcf01?convert_to_webp=true)
+
+## Función de activación
+
+Prueba en tensorflow playground a elegir diferentes funciones de activación para un mismo problema
+
+## Topologías
+
+* La forma en la que se conectan se denomina topología
+* [Listado de topologías](http://www.asimovinstitute.org/neural-network-zoo/)
+* Cada topología suele resolver un tipo de problema mejor que otro. Por ejemplo:
+
+    * Convolucionales: reconocimiento de imágenes
+    * Recurrentes: reconocimiento de voz
+    * LSTM: composición de palabras y música
+
+## Topologías
+
+* Lo que determina una u otra es:
+
+    * Número de capas
+    * Conexiones entre nodos: ¿la salida viaja siempre hacia delante, o hay bucles, ...?
+    * Número de nodos por capa
+
+## Topologías
+
+* Los nodos de entrada reciben la señal sin procesar
+* El número de nodos de salida viene determinado por el número de niveles de la clase, o número de salidas
+* El # capas intermedias y la cantidad de neuronas viene determinada por la complejidad del problema, la cantidad de ruido, ...
+* Conviene empezar con redes simples y, si no funcionan, ir añadiendo capas y neuronas
+
+## Topologías
+
+Prueba en tensorflow playground a elegir diferentes topologías (# capas y # neuronas por capa) para un mismo problema
+
+## Algoritmo de entrenamiento
+
+* Lo más común: utilizar el algoritmo de backpropagation
+* Fase 1: propagación. Cada propagación, implica:
+
+    * Forward: se aplican los pesos actuales y la función de propagación para obtener el valor de salida
+    * Backward: se calcula el error (real vs predicho) y se propaga hacia atrás
+    
+* Fase 2: actualización de pesos. Se modifican utilizando descenso de gradiente, aplicando una modificación relacionada con el learning rate. Learning rates altos aprendes más rápido, pero son más inestables.
+
+## Algoritmo de entrenamiento
+
+* [Visualización](http://vis.supstat.com/2013/03/gradient-descent-algorithm-with-r/)
+
+## Algoritmo de entrenamiento
+
+![](https://github.com/rasbt/python-machine-learning-book/raw/master/faq/visual-backpropagation/forward-propagation.png)
+
+## Algoritmo de entrenamiento
+
+![](https://github.com/rasbt/python-machine-learning-book/raw/master/faq/visual-backpropagation/backpropagation.png)
+
+## Algoritmo de entrenamiento
+
+![](https://github.com/rasbt/python-machine-learning-book/raw/master/faq/visual-backpropagation/nonconvex-cost.png)
+
+## Entrenamiento
+
+Prueba en tensorflow playground a elegir diferentes learning rates para un mismo problema
+
+## Deep Learning
+
+* Redes de neuronas complejas (gran cantidad de capas intermedias)
+* Estado del arte de la inteligencia artificial
+
+## Deep Learning
+
+* Frameworks
+
+    * Tensorflow
+    * Torch
+    * mxnet
+    * y más...
+
+## Aplicaciones curiosas
+
+* [Ostagram](https://ostagram.ru/static_pages/lenta?last_days=30&locale=en)
+* [Auto-generación](http://karpathy.github.io/2015/05/21/rnn-effectiveness/) de textos de Shakespeare, artículos de wikipedia, código fuente
+* [Composición musical](http://www.hexahedria.com/2015/08/03/composing-music-with-recurrent-neural-networks/)
+* [Sunspring](https://www.youtube.com/watch?v=LY7x2Ihqjmc)
+
+## Redes neuronales - Pros y cons
+
+* Cons:
+
+    * Muy caja negra
+    * Coste computacional
+    * Tienden hacia el under o overfitting
+    * Suelen necesitar conjuntos grandes de entrenamiento
+    
+* Pros:
+
+    * Precisos, se adaptan bien a problemas diferentes
+    * Son superiores a otros modelos en ciertos problemas
+    * Menor importancia del feature engineering
+
+## Redes neuronales
+
+* Ver 03_neural_nets.R
+
+## Random forests
+
+* Los árboles de decisión son potentes e interpretables, pero en general tienen poca precisión. Su estructura varía mucho dependiendo de los datos con los que se entrene
+* Esto se puede solventar utilizando ensembles de árboles
+
+## Ensembles de árboles
+
+* Se utilizan meta-algoritmos:
+
+   * Bagging
+   * Boosting
+
+## Bagging
+
+* Boostrap aggregation
+* Ensembles en paralelo
+* Disminuye la varianza del modelo, evitando el overfitting
+
+## Bagging
+
+* Se cogen conjuntos de entrenamiento distintos (repitiendo datos, ya que no suele haber suficientes) y para cada uno de ellos se entrena un modelo
+* El resultado es:
+
+    * En problemas de clasificación, la clase con más "votos"
+    * En problemas de regresión, la media
+
+## Boosting
+
+* Ensembles secuenciales
+* Disminuye el sesgo del modelo, evitando el underfitting
+
+## Boosting
+
+* En lugar de crear un modelo complejo, crea muchos simples
+* El modelo de una capa posterior intenta clasificar aquellas observaciones en las que no funciona bien el modelo anterior
+* Es decir, se van modelando los residuos
+
+## Random forests
+
+* Es una implementación concreta del bagging de árboles de decisión
+* Además, selecciona aleatoriamente las features para añadir diversidad
+* La salida se decide mediante votación / promedio de la salida de los árboles
+
+## Random forests - pros y cons
+
+* Pros
+
+    * Suelen funcionar bien en muchos casos de uso
+    * Al escoger subconjuntos para entrenar, van bien al tener muchos datos
+    * Preparados para reducir la varianza del modelo, robustos ante overfitting
+
+* Cons
+
+    * Caja negra, aunque "menos" que otros métodos, gracias a que se puede extraer la importancia de variables
+
+## Random forests
+
+Ver 04_random_forests
+
