@@ -1,0 +1,33 @@
+---
+title: "Give me some credit"
+author: "Luz Frias"
+date: "2017-03-01"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Los datos
+
+El dataset se ha extraído de una competición de Kaggle: [give me some credit](https://www.kaggle.com/c/GiveMeSomeCredit).
+
+## El cliente
+
+Nuestro cliente es un banco que quiere minimizar sus pérdidas por impagos en créditos. También le interesa saber cuáles son los factores más determinantes a la hora de identificar futuros impagos.
+
+## El proyecto
+
+1. Explora
+2. Pre-procesa
+3. Modela
+4. Evalúa
+5. Repite
+
+## Importante
+
+* Antes de modelar, entiende los datos
+* No intentes abordar modelos muy complejos desde el principio. Tardan en ser entrenados y no sabes si la mejora justifica la complejidad
+* Diseña un proceso repetible. Es decir, que si mañana vuelves a construir el mismo modelo, de el mismo resultado
+* Si piensas que hay nuevas variables que puedan ayudar, añádelas
