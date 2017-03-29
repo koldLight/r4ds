@@ -4,8 +4,8 @@
 # clustering: DBSCAN
 #################
 
-library("fpc")
-library("factoextra")
+library(fpc)
+library(factoextra)
 
 # Vamos a coger un dataset
 data("multishapes")
@@ -13,10 +13,13 @@ df <- multishapes[, 1:2]
 plot(df)
 
 # Ejercicio: aplica k-medias y pinta el resultado. ¿Qué pasa?
+clusters <- kmeans(df, centers = 5)
+ggplot(data = df, aes(x = x, y = y)) + 
+  geom_point(aes(color = as.factor(clusters$cluster)))
 
 # Vamos a probar con un algoritmo basado en densidad
 df <- multishapes[, 1:2]
-db_res <- fpc::dbscan(df, eps = 50, MinPts = 10)
+db_res <- dbscan(df, eps = 0.2, MinPts = 10)
 df$db_cluster <- as.factor(db_res$cluster)
 
 # Pintamos
