@@ -10,6 +10,8 @@ library(ggplot2)
 library(dendextend)
 library(d3heatmap)
 
+set.seed(1234)
+
 # Utilizamos el dataset de iris
 head(iris)
 summary(iris)
@@ -18,8 +20,8 @@ summary(iris)
 iris_c <- as.matrix(iris[, 3:4])
 
 # Normalizamos
-iris_c$Petal.Length <- scale(iris_c$Petal.Length)
-iris_c$Petal.Width  <- scale(iris_c$Petal.Width)
+iris_c[, 1] <- scale(iris_c[, 1])
+iris_c[, 2] <- scale(iris_c[, 2])
 summary(iris_c)
 
 # Calculamos cluster jerárquico
@@ -36,8 +38,11 @@ table(cluster_cut, iris$Species)
 # 1. ¿Qué criterio de enlace está usando hclust?
 # 2. Cambiálo por otro y repite la operación
 
+iris_r <- as.data.frame(iris_c)
+iris_r$Species <- iris$Species
+
 # Pintamos el resultado
-ggplot(iris, aes(Petal.Length, Petal.Width, color = iris$Species)) + 
+ggplot(iris_r, aes(Petal.Length, Petal.Width, color = Species)) + 
   geom_point(alpha = 0.5, size = 3) + 
   geom_point(col = cluster_cut) + 
   scale_color_manual(values = c("black", "red", "green"))

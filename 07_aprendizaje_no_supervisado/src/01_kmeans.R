@@ -7,6 +7,8 @@
 library(cluster)
 library(ggplot2)
 
+set.seed(1234)
+
 # Utilizamos el dataset de iris
 head(iris)
 summary(iris)
@@ -15,12 +17,12 @@ summary(iris)
 iris_c <- as.matrix(iris[, 3:4])
 
 # Normalizamos
-iris_c$Petal.Length <- scale(iris_c$Petal.Length)
-iris_c$Petal.Width  <- scale(iris_c$Petal.Width)
+iris_c[, 1] <- scale(iris_c[, 1])
+iris_c[, 2] <- scale(iris_c[, 2])
 summary(iris_c)
 
 # Calculamos k-medias
-clusters <- kmeans(iris_c, 3)
+clusters <- kmeans(iris_c, centers = 3)
 
 # Como salida, tenemos algunos valores interesantes
 clusters$size      # Tamaño de cada cluster
@@ -28,7 +30,8 @@ clusters$centers   # Los centros
 clusters$withinss  # Distancia intra-cluster
 
 # Vamos a pintar los resultados
-iris_r <- iris
+iris_r <- as.data.frame(iris_c)
+iris_r$Species <- iris$Species
 
 # Pegamos la información del clúster a cada fila del dataset original
 iris_r$cluster <- factor(clusters$cluster)
@@ -44,8 +47,8 @@ table(iris_r$Species, iris_r$cluster)
 
 # Pintamos los valores que se han clasificado "mal"
 equivocados <- iris_r[iris_r$cluster == 1 & iris_r$Species != "setosa", ]
-equivocados <- rbind(equivocados, iris_r[iris_r$cluster == 2 & iris_r$Species != "virginica", ])
-equivocados <- rbind(equivocados, iris_r[iris_r$cluster == 3 & iris_r$Species != "versicolor", ])
+equivocados <- rbind(equivocados, iris_r[iris_r$cluster == 3 & iris_r$Species != "virginica", ])
+equivocados <- rbind(equivocados, iris_r[iris_r$cluster == 2 & iris_r$Species != "versicolor", ])
 equivocados
 
 ggplot(data = iris_r, aes(x = Petal.Length, y = Petal.Width, color = cluster)) + 
