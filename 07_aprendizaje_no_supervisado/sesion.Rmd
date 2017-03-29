@@ -1,0 +1,205 @@
+---
+title: "Aprendizaje no supervisado"
+author: "Luz Frias"
+date: "2017-03-29"
+output:
+  revealjs::revealjs_presentation:
+    pandoc_args: [ "--slide-level", "1" ]
+    transition: none
+    background_transition: none
+    reveal_options:
+      controls: false
+      width: 1200
+---
+
+## Aprendizaje no supervisado
+
+* Se utiliza sobre datos no etiquetados
+* Trata de encontrar patrones, no de predecir
+
+## Aprendizaje no supervisado - debate
+
+* ¿Cuáles de estos casos piensas que se pueden resolver con aprendizaje no supervisado?
+
+    * Detección de impago de créditos
+    * Identificar tipos de consumidor, para poder elaborar campañas de marketing
+    * Detección de anomalías (outliers) en distintos casos: monitorización médica, funcionamiento de maquinarias, ...
+
+## Técnicas
+
+* Lo más común: clustering
+
+    * k-medias
+    * clustering jerárquico
+    
+* Hay más: especializadas para detección de anomalías, con redes neuronales, ...
+
+## La distancia
+
+* Para determinar la similitud entre un grupo de observaciones, y su diferenciación en comparación con otro grupo, se utiliza el concepto de distancia
+* Diferentes tipos de distancia: euclídea, manhattan, ...
+* Las observaciones con poca distancia entre ellas, se entienden que son similares entre sí
+
+## La distancia
+
+![](https://lyfat.files.wordpress.com/2012/05/euclidean.png)
+
+## La distancia
+
+![](https://lyfat.files.wordpress.com/2012/05/chebyshev.png)
+
+## La distancia
+
+![](https://lyfat.files.wordpress.com/2012/05/manhattan.png)
+
+## La distancia - ¡CUIDADO!
+
+* Para obtener los resultados esperados, es muy importante:
+
+    * Normalizar las variables en el preproceso
+    * Elegir bien las variables de entrada, coherentemente según importancia deseada (ver segundo ejemplo en la siguiente diapositiva)
+
+## La distancia - debate
+
+* Razona qué problema tendríamos en los siguientes casos:
+
+    * Queremos clusterizar a un conjunto de personas según su altura (en metros) y su peso (en kg). No normalizamos las variables. ¿Qué obtendríamos?
+    * Queremos clusterizar a un conjunto de viviendas según sus características. Como variables, tenemos: precio venta, distancia al centro de la ciudad, superficie total, superficie útil, superficie elementos comunes. ¿Qué pasa?
+
+## La distancia - variables no numéricas
+
+* ¿Cómo hacemos cuando queremos introducir variables categóricas (p.e. sexo, etnia, ...)?
+* Se pueden convertir a variables 0-1. Por ejemplo, sexo se puede transformar a 0 (caso hombre), 1 (caso mujer)
+* Si es una variable categórica con más de dos estados, se pueden crear tantas variables como estados. Por ejemplo, para describir la situación laboral de una persona, se puede resumir en varias variables binarias (está en paro, está empleado por cuenta propia, está empleado por cuenta ajena).
+
+## La distancia - variables no numéricas - debate
+
+* ¿Qué pasa con las categóricas con muchos estados?
+* ¿Qué pasa si tenemos una binaria, en la que uno de los estados ocurre muy raramente?
+
+## La distancia - variables no numéricas - asimetría
+
+* Existen categóricas binarias simétricas y asimétricas
+* Simétricas:
+
+    * Sin preferencia por cuál clasificar como 1 (positivo, presente) y cuál como 0 (negativo, ausente). P.e.: hombre vs mujer
+    * Una ocurre raramente. P.e.: es daltónico. Marcaremos como 1 la presencia de este atributo. Además, si dos observaciones tienen ausente (valor 0) esta categoría, no es un hecho destacable. En cambio, si dos lo tienen presente (valor 1), indica bastante similitud.
+    
+## La distancia - variables no numéricas - asimetría
+
+* Cuando nos encontramos con variables asimétricas, hay que contar como similitud únicamente las coincidencias en los valores 1
+* Ver `?daisy` (paquete `cluster`)
+
+## Técnicas de clústering
+
+* Ver [comparación ténicas de clústering](http://scikit-learn.org/stable/modules/clustering.html)
+
+## K-medias
+
+* El objetivo es particionar un conjunto de n observaciones en k grupos en el que cada observación pertenece al grupo cuyo valor medio es el más cercano (cluster esféricos)
+
+## K-medias
+
+* Es un poco simplista:
+
+    * Pensado para variables numéricas
+    * No trata los outliers
+    * Solo trata bien conjuntos de similar tamaño bien diferenciados
+    * Se degrada cuando hay muchas dimensiones
+
+## K-medias: funcionamiento
+
+* Como parámetro, se le proporciona el número de grupos
+* Trata de minimizar la dispersión intra-clúster
+
+## K-medias: funcionamiento
+
+1. Se eligen k centros al azar
+2. Se asignan las observaciones al grupo con centro más cercano
+3. Se mueve el centro al punto medio de las observaciones asignadas
+4. Se repite desde el punto 2 hasta que los centros no se mueven
+
+## K-medias: funcionamiento
+
+* Ver [funcionamiento de k-medias interactivo](https://www.naftaliharris.com/blog/visualizing-k-means-clustering/)
+
+## K-mediodes: una variación
+
+* K-medias minimiza los cuadrados de la distancia
+* K-mediodes minimiza el valor absoluto de la distancia
+* Esto hace k-mediodes más robusto frente a outliers que k-medias
+
+![](http://hduongtrong.github.io/assets/unsupervised_learning/kmedoids.gif)
+
+## Clustering jerárquico
+
+* Un problema de k-medias es que hay que especificar el número de clusters, y no siempre está claro
+* Alternativa a este problema: el clustering jerárquico
+
+## Clustering jerárquico - funcionamiento
+
+* Dos estrategias para hacerlo:
+
+    * Aglomerativa: de abajo a arriba, agrupando
+    * Divisiva: de arriba a abajo, realizando cortes
+
+* De esta forma, tenemos:
+
+    * En el nivel superior, un único clúster con todas las observaciones
+    * En el nivel inferior, tantos clústers como observaciones
+
+## Clustering jerárquico - dendogramas
+
+![](https://support.sas.com/documentation/cdl/en/statug/63962/HTML/default/images/distg1a.png)
+
+## Clustering jerárquico - aglomerativo
+
+* Datos iniciales
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Clusters.svg/250px-Clusters.svg.png)
+
+## Clustering jerárquico - aglomerativo
+
+* Resultado
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Hierarchical_clustering_simple_diagram.svg/418px-Hierarchical_clustering_simple_diagram.svg.png)
+
+## Clustering jerárquico - aglomerativo
+
+* Para determinar qué clusters juntar, se utiliza el criterio de enlace. Mide "cuánto de cerca están"
+* Hay diferentes criterios de enlace:
+
+    * Máximo o completo: extrae la máxima distancia posible entre dos clusters
+    * Mínimo o simple: extrae la mínima distancia posible entre dos clusters
+    * Promedio: promedia las distancias entre todas las parejas de puntos entre un cluster y el otro
+
+## DBSCAN
+
+* K-medias y clustering jerárquico funcionan bien cuando los clusters son esféricos. Es decir, cada grupo es compacto y separado del resto
+* Hay casos en los que buscamos otros patrones. Por ejemplo, identificación de rutas en base a señales GPS.
+
+## DBSCAN
+
+* Identifica clusters basados en densidad
+* Robusto frente a outliers y ruido
+* No es necesario especificar el número de clusters
+
+## DBSCAN
+
+* Necesita dos parámetros de entrada
+
+    * Epsilon: define el radio alrededor de un punto que considera "vecindario"
+    * Número mínimo de puntos: mínimo número de vecinos dentro del radio marcado por epsilon
+
+## DBSCAN
+
+* Clasifica las observaciones en:
+
+    * Core: si tiene al menos tantos vecinos como los especificados
+    * Border: si está cerca de un punto core, pero tiene menos vecinos
+    * Outlier: si no es core ni border
+
+## DBSCAN - algoritmo
+
+Ver funcionamiento [aquí](https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/)
+
