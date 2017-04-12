@@ -1,0 +1,25 @@
+var_id	var_name	var_formula	var_units
+1	Dióxido de Azufre	SO2	µg/m3
+6	Monóxido de Carbono	CO	mg/m3
+7	Monóxido de Nitrógeno	NO	µg/m3
+8	Dióxido de Nitrógeno	NO2	µg/m3
+9	Partículas < 2.5 µm	PM2.5	µg/m3
+10	Partículas < 10 µm	M10	µg/m3
+12	Óxidos de Nitrógeno	NOx	µg/m3
+14	Ozono	O3	µg/m3
+20	Tolueno	TOL	µg/m3
+30	Benceno	BEN	µg/m3
+35	Etilbenceno	EBE	µg/m3
+37	Metaxileno	MXY	µg/m3
+38	Paraxileno	PXY	µg/m3
+39	Ortoxileno	OXY	µg/m3
+42	Hidrocarburos totales (hexano)	TCH	mg/m3
+44	Hidrocarburos no metánicos (hexano)	NMHC	mg/m3
+80	UV	UV	desconocida
+81	VV	Velocidad viento	km/h
+82	DV	Dirección viento	grados
+83	Temperatura	temperatura	celsius
+86	HR	Humedad relativa	porcentaje
+87	PRB	Presión barométrica	mb
+88	RS	Radiación solar	Wh/m2
+89	LL	LL	desconocida
