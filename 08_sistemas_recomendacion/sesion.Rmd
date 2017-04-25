@@ -1,0 +1,66 @@
+---
+title: "Sistemas de recomendación"
+author: "Luz Frias"
+date: "2017-04-25"
+output:
+  revealjs::revealjs_presentation:
+    pandoc_args: [ "--slide-level", "1" ]
+    transition: none
+    background_transition: none
+    reveal_options:
+      controls: false
+      width: 1200
+---
+
+## Sistemas de recomendación
+
+* Filtran la información
+* Buscan predecir la preferencia o puntuación de un usuario por un producto
+
+## Sistemas de recomendación - debate
+
+* ¿Qué sistemas de recomendación conoces?
+* ¿Cómo intuyes que funcionan?
+
+## Técnicas frecuentes
+
+* No personalizado:
+
+    * Reglas de asociación. Utilizado frecuentemente en análisis del carrito. Ejemplo: Amazon, "los clientes que compraron este producto también compraron..."
+
+* Personalizado:
+
+    * Filtrado basado en contenido: se extraen las propiedades de los productos comprados por un usuario en el pasado, y se recomiendan productos similares a ellos.
+    * Filtrado colaborativo: busca usuarios similares al de referencia y recomienda productos que le gustaron a ellos
+
+## Técnicas frecuentes - debate
+
+* De cada una de las técnicas comentadas, comenta algún escenario en el que puedan ser útiles y otro en las que no
+
+## Preferencia del usuario
+
+* Explícita:
+
+    * Pidiendo puntuación
+    * Pidiendo ordenar en un ránking
+    * Pidiendo hacer una lista de elementos que han gustado
+
+* Implícita:
+
+    * Observando las visitas sobre diferentes productos en un e-commerce
+    * Obteniendo las películas vistas o canciones escuchadas
+    * O más avanzado... ver airbnb
+    
+## Más allá de la precisión
+
+* Diversidad
+* Exploración vs explotación
+* Privacidad
+* Datos demográficos
+
+## Algunos problemas
+
+* Escalabilidad
+* Cold-start
+* Pocos valores conocidos por usuario del total de productos
+
