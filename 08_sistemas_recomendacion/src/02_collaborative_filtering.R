@@ -3,6 +3,7 @@
 # 2017-04-25
 # sistemas de recomendación - filtrado colaborativo
 # datos: https://grouplens.org/datasets/movielens/100k/
+# readme: http://files.grouplens.org/datasets/movielens/ml-100k/README
 #################
 
 library(dplyr)
@@ -75,9 +76,18 @@ recommendation
 #  items. Para ver si funciona correctamente, saca las películas más parecidas a una que conozcas,
 #  y evalúa el resultado
 
-# Ejercicio: ¿qué pasa con las valoraciones de cada usuario? Piensa en su objetividad. ¿Podemos hacer
-#  algo para mejorarlo?
-
-# Ejercicio: prueba recomendaciones contigo mismo, es decir, puntúa alrededor de 10 películas que
-#  hayas visto y prueba qué te sugiere tu motor de recomendación. ¿Son buenas?
-
+# Ejercicios: 
+# 1. Haz más pequeño el dataset de películas, de forma que reconozcas la mayoría de las películas.
+#    Por ejemplo, filtrando por superiores a un determinado año y con un mínimo de ratings
+# 2. Hemos hecho un filtrado colaborativo en base a usuarios. Ahora, haz tú uno basado en
+#    items. Para ver si funciona correctamente, saca las películas más parecidas a una que conozcas,
+#    y evalúa el resultado.
+# 3. ¿Qué pasa con las valoraciones de cada usuario? Piensa en su objetividad. ¿Podemos hacer
+#    algo para mejorarlo?
+# 4. Encapsula el código de filtrado colaborativo user-based en una función a la que le pasas el ID
+#    de la película y parámetros opcionales para tunear el comportamiento (número de resultados a extraer, cantidad
+#    mínima de ratings comunes, ...)
+# 5. Prueba recomendaciones contigo mismo, es decir, puntúa alrededor de 10 películas que
+#    hayas visto y prueba qué te sugiere tu motor de recomendación. ¿Son buenas?
+# 6. Puedes seguir tuneando la recomendación. Por ejemplo, asegurar la diversidad de las recomendaciones mirando
+#    el género
