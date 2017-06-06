@@ -1,0 +1,68 @@
+---
+title: "R en producción"
+author: "Luz Frias"
+date: "2017-06-05"
+output:
+  revealjs::revealjs_presentation:
+    pandoc_args: [ "--slide-level", "1" ]
+    transition: none
+    background_transition: none
+    reveal_options:
+      controls: false
+      width: 1200
+---
+
+## R hasta ahora
+
+* Lo hemos usado con buenos resultados para:
+    * Exploración
+    * Análisis
+    * Visualización
+    * Modelización
+
+## Según alcance...
+
+* Script de exploración
+* Prototipo / PoC
+* Proyecto / aplicación
+* Librería / paquete
+
+## Script de exploración
+
+* Suele ser de uso personal, no de equipo
+* Habitualmente un solo fichero, .R o .Rmd
+* Buenas prácticas:
+
+    * Estilo de código
+    * Si hay dependencias (ficheros de datos de entrada, etc.) ponerlos en una ruta relativa al script (p.e. `dat` en la misma carpeta). No hacer referencias a rutas completas (/home/paco/proyecto/...)
+    * Reproducible
+
+## Prototipo / PoC
+
+* Suele incluir varios ficheros o pasos (p.e. exploración + creación de modelos + predicciones, ...)
+* No se ejecuta en producción ni entornos críticos
+* Buenas prácticas (además de script de exploración):
+
+    * Documentación: de dependencias, de funciones y de scripts
+    * Usar control de versiones
+    * Estructura del proyecto
+
+## Estructura del proyecto
+
+* `R/`: contiene ficheros con funciones, nunca código ejecutable, más allá de llamadas a `library`
+* `dat/`: contiene ficheros de datos de entrada
+* `doc/`: documentación (.Rmd, pdf, ...)
+* `conf/`: opcional, configuración del proyecto. P.e: conexiones a BD, parámetros globales, ...
+* `resources/`: opcional, recursos adicionales. P.e.: ficheros SQL a lanzar en algún momento
+* En el directorio raíz: scripts con código ejecutable. Si deben seguir un orden, hay que numerarlos. P.e.: `01_load_data.R`, `02_build_model.R`, `03_generate_results_report.R`
+* README.md: propósito del proyecto, qué hacer antes de ejecutarlos (p.e. instalar ciertos paquetes), cómo y qué ejecutar, ...
+
+## Proyecto / aplicación
+
+* Se lanza en producción o entornos críticos
+* Buenas prácticas (además de las de prototipo):
+
+    * Gestión y trazabilidad de excepciones: logging, control errores, alarmas, ...
+    * Robustez: control de datos / parámetros entrada, testing automático
+    * Gestión de releases: recomendado un estilo tipo git-flow
+    * Gestión de dependencias
