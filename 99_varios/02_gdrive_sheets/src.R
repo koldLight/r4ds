@@ -1,6 +1,6 @@
 #################
 # Luz Frias
-# 2017-04-25
+# 2017-06-07
 # Lectura de google spreadsheets en Drive
 # Doc del paquete en github:
 # https://github.com/jennybc/googlesheets
