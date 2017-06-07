@@ -66,3 +66,22 @@ output:
     * Robustez: control de datos / parámetros entrada, testing automático
     * Gestión de releases: recomendado un estilo tipo git-flow
     * Gestión de dependencias
+
+## Librería / paquete
+
+* Utilidades genéricas que otros utilizarán en sus aplicaciones
+* Buenas prácticas (además de las de prototipo):
+
+    * Robustez: control de parámetros entrada, mensajes de error interpretables
+    * Testing automático de las llamadas interfaz
+    * Gestión de releases: recomendado un estilo tipo git-flow
+    * Retrocompatibilidad
+    * Documentación, ejemplos de uso y vignettes
+
+## Testing - debate
+
+* ¿Cuándo es necesario?
+* ¿Cómo decidir a qué incluir test?
+* ¿Tests a implementaciones internas o a interfaces?
+* ¿Qué pasa si descubres un bug?
+
