@@ -1,0 +1,46 @@
+---
+title: "R en producción"
+author: "Luz Frias"
+output: html_document
+---
+
+## Objetivo
+
+Vamos a desarrollar y publicar un paquete en R que pueda ser utilizado por cualquier usuario de la comunidad, que podrá instalar nuestro paquete haciendo uso de `devtools::install_github`.
+
+Este paquete permitirá descargar datos metereológicos realizando llamadas vía API a [metaweather](https://www.metaweather.com/).
+
+## Antes de empezar
+
+Necesitaremos:
+
+* Un usuario de GitHub
+* Alguna herramienta para interaccionar con los repositorios git. Puede ser `git` desde línea de comandos, o una interfaz como SourceTree
+* Consultar la documentación de la API de metaweather [aquí](https://www.metaweather.com/api/)
+
+## Funcionalidad
+
+Nuestro paquete deberá tener una función `get_weather` con los siguientes parámetros:
+
+* `location_name`: La localización con nombre a buscar. P.e.: madrid, londres, ... Obligatorio si no se especifican `lat` y `lon`
+* `lat`: Latitud de la localización. Obligatorio si no se especifica `location_name`
+* `lon`: Longitud de la localización. Obligatorio si no se especifica `location_name`
+* `date`: Fecha por la que preguntar. Opcional, si no se especifica se devuelve el tiempo para el día actual
+
+Como salida, debe devolver una lista con todos los parámetros metereológicos que te devuelva la API. Elimina aquello con menos interés, como `id` y `created`.
+
+## A tener en cuenta
+
+
+* Respeta la estructura común de paquetes en R:
+
+    * Un fichero por función (en este caso es solo una) en la carpeta `R/`
+    * Los tests en `tests/`
+    * Un fichero `README.md` con una descripción de cómo instalar el paquete y algunos ejemplos de uso
+
+* Todo tiene que estar correctamente documentado: argumentos, salida, descripción general y ejemplos Utiliza el estilo "a lo javadoc", usando `devtools` y `roxygen2`
+* Comprueba los parámetros de entrada correctamente y devuelve mensajes fácilmente interpretables en caso de error. P.e., si se llama a la función sin `location_name` ni `lat` ni `lon`. Puedes utilizar `stop`
+* Incluye un set de tests, probando combinaciones válidas y no válidas de parámetros
+* Comprueba que `R CMD build` y el posterior `R CMD check` funcionan correctamente y no dan errores ni warnings no justificados
+* Comprueba que puedes instalar tu paquete publicado con `devtools::install_github`, se ve bien la documentación al hacer `?get_weather` y puedes invocar la función correctamente
+* Si has terminado todo, configura TravisCI como sistema de integración continua para comprobar que "no rompes algo" cada vez que haces un cambio en el repositorio del paquete. Más información [aquí](https://docs.travis-ci.com/user/languages/r/)
