@@ -31,7 +31,6 @@ Como salida, debe devolver una lista con todos los parámetros metereológicos q
 
 ## A tener en cuenta
 
-
 * Respeta la estructura común de paquetes en R:
 
     * Un fichero por función (en este caso es solo una) en la carpeta `R/`
